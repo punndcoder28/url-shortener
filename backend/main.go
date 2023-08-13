@@ -1,17 +1,16 @@
 package main
 
-import "net/http"
+import (
+	"fmt"
+
+	"github.com/punndcoder28/url-shortner/controllers"
+)
 
 func main() {
-	http.HandleFunc("/shorten", func(writer http.ResponseWriter, request *http.Request) {
-	})
+	fmt.Println("Welcome to URL Shortner")
 
-	http.HandleFunc("/redirect", func(writer http.ResponseWriter, request *http.Request) {
-	})
-}
+	fmt.Println("Creating tables")
+	controllers.CreateTables()
 
-func handleShorten(writer http.ResponseWriter, request *http.Request) {
-}
-
-func handleRedirect(writer http.ResponseWriter, request *http.Request) {
+	fmt.Println("Created tables")
 }
