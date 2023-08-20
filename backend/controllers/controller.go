@@ -1,13 +1,10 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
-	"os"
 
-	"github.com/joho/godotenv"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-
+	helpers "github.com/punndcoder28/url-shortner/helpers"
 	models "github.com/punndcoder28/url-shortner/models"
 )
 
@@ -17,28 +14,33 @@ var dsn string
 CreateTables to create all the tables in the database
 */
 func CreateTables() {
-	loadEnv()
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
+	db := helpers.ConnectDB()
 
 	fmt.Println("Connection Opened to Database")
 
-	createURLTable(db)
+	helpers.CreateURLTable(db)
 
 	fmt.Println("Database Migrated")
 }
 
-func loadEnv() {
-	err := godotenv.Load()
-	if err != nil {
-		panic("Error loading .env file")
-	}
+func insertURL(url string) {
+	db := helpers.ConnectDB()
 
-	dsn = os.Getenv("DATABASE_DSN")
+	hashedURL := helpers.HashURL(url)
+	urlRecord := models.URL{Hash: hashedURL, URL: url}
+	db.Create(&urlRecord)
 }
 
-func createURLTable(db *gorm.DB) {
-	db.AutoMigrate(&models.URL{})
+func getURLFromHash(hash string) []byte {
+	db := helpers.ConnectDB()
+
+	var url models.URL
+	db.Where("hash = ?", hash).First(&url)
+
+	jsonURL, err := json.Marshal(url)
+	if err != nil {
+		panic(err)
+	}
+
+	return jsonURL
 }
