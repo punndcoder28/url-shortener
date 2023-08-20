@@ -32,5 +32,6 @@ func ConnectDB() *gorm.DB {
 }
 
 func CreateURLTable(db *gorm.DB) {
+	db.Migrator().DropTable(&models.URL{})
 	db.AutoMigrate(&models.URL{})
 }
