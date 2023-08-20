@@ -7,3 +7,7 @@ func HashURL(url string) string {
 
 	return string(fnvHashedString)
 }
+
+func CreateTempURLFromHash(hash string) string {
+	return "http://localhost:8080/" + hash
+}

@@ -8,3 +8,7 @@ type URL struct {
 	URL       string    `gorm:"type:string;not null"`
 	CreatedAt time.Time `gorm:"autoCreateTime"`
 }
+
+type CreateURLRequest struct {
+	URL string `json:"url"`
+}
