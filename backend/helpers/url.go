@@ -1,11 +1,18 @@
 package helpers
 
-import "hash/fnv"
+import (
+	"encoding/hex"
+	"hash/fnv"
+)
 
 func HashURL(url string) string {
-	fnvHashedString := fnv.New32a().Sum([]byte(url))
+	hash := fnv.New32a()
+	hash.Write([]byte(url))
+	hashValue := hash.Sum(nil)
 
-	return string(fnvHashedString)
+	hashHex := hex.EncodeToString(hashValue)
+
+	return hashHex
 }
 
 func CreateTempURLFromHash(hash string) string {
