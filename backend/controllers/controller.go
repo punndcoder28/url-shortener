@@ -28,6 +28,7 @@ func insertURL(url string) string {
 	db := helpers.ConnectDB()
 
 	hashedURL := helpers.HashURL(url)
+	fmt.Println("Hashed URL: ", hashedURL)
 	urlRecord := models.URL{Hash: hashedURL, URL: url}
 	db.Create(&urlRecord)
 
