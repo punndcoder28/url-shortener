@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 
-	"github.com/punndcoder28/url-shortner/controllers"
+	controllers "github.com/punndcoder28/url-shortner/controllers"
+	routers "github.com/punndcoder28/url-shortner/routers"
 )
 
 func main() {
@@ -13,4 +16,10 @@ func main() {
 	controllers.CreateTables()
 
 	fmt.Println("Created tables")
+
+	fmt.Println("Starting server")
+
+	r := routers.Router()
+
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
