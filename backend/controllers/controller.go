@@ -9,19 +9,6 @@ import (
 	models "github.com/punndcoder28/url-shortner/models"
 )
 
-/*
-CreateTables to create all the tables in the database
-*/
-func CreateTables() {
-	db := helpers.ConnectDB()
-
-	fmt.Println("Connection Opened to Database")
-
-	helpers.CreateURLTable(db)
-
-	fmt.Println("Database Migrated")
-}
-
 func insertURL(url string) string {
 	db := helpers.ConnectDB()
 
