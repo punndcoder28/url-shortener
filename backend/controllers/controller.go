@@ -9,8 +9,6 @@ import (
 	models "github.com/punndcoder28/url-shortner/models"
 )
 
-var dsn string
-
 /*
 CreateTables to create all the tables in the database
 */
