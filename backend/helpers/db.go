@@ -12,9 +12,7 @@ import (
 
 func loadEnv() string {
 	err := godotenv.Load()
-	if err != nil {
-		panic("Error loading .env file")
-	}
+	HandleErr(err)
 
 	dsn := os.Getenv("DATABASE_DSN")
 
@@ -24,9 +22,7 @@ func loadEnv() string {
 func ConnectDB() *gorm.DB {
 	dsn := loadEnv()
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
+	HandleErr(err)
 
 	return db
 }
