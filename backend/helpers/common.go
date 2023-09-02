@@ -7,7 +7,7 @@ package helpers
 HandleErr - This function panics if there is an error
 */
 func HandleErr(err error) {
-  if err != nil {
-    panic(err)
-  }
+	if err != nil {
+		panic(err)
+	}
 }
