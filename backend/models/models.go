@@ -10,5 +10,5 @@ type URL struct {
 }
 
 type CreateURLRequest struct {
-	URL string `json:"url"`
+	URL string `json:"url" validate:"required,url"`
 }
