@@ -2,7 +2,10 @@ package helpers
 
 import (
 	"encoding/hex"
+	"fmt"
 	"hash/fnv"
+
+	models "github.com/punndcoder28/url-shortner/models"
 )
 
 /*
@@ -23,4 +26,18 @@ CreateTempURLFromHash - This function returns a temporary URL from the hash
 */
 func CreateTempURLFromHash(hash string) string {
 	return "http://localhost:8080/" + hash
+}
+
+/*
+InsertURL - This function inserts a URL into the database
+*/
+func InsertURL(url string) string {
+	db := ConnectDB()
+
+	hashedURL := HashURL(url)
+	fmt.Println("Hashed URL: ", hashedURL)
+	urlRecord := models.URL{Hash: hashedURL, URL: url}
+	db.Create(&urlRecord)
+
+	return hashedURL
 }
