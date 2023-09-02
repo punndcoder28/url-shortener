@@ -1,3 +1,4 @@
+// Package controllers : This package contains all the controllers
 package controllers
 
 import (
@@ -33,7 +34,16 @@ func CreateURL(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var createURLRequest models.CreateURLRequest
-	_ = json.NewDecoder(r.Body).Decode(&createURLRequest)
+
+	json.NewDecoder(r.Body).Decode(&createURLRequest)
+
+	validationErr := helpers.ValidateShortenURLRequest(createURLRequest)
+	if validationErr != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		response := map[string]interface{}{"Message": "Invalid request body sent"}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
 
 	hash := helpers.InsertURL(createURLRequest.URL)
 	url := helpers.CreateTempURLFromHash(hash)
