@@ -3,6 +3,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	helpers "github.com/punndcoder28/url-shortner/helpers"
@@ -45,7 +46,14 @@ func CreateURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	hash := helpers.InsertURL(createURLRequest.URL)
+	hash, err := helpers.InsertURL(createURLRequest.URL)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		response := map[string]interface{}{"error": err.Error()}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
 	url := helpers.CreateTempURLFromHash(hash)
 	response := map[string]interface{}{"url": url}
 	json.NewEncoder(w).Encode(response)
