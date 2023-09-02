@@ -31,3 +31,17 @@ func CreateURLTable(db *gorm.DB) {
 	db.Migrator().DropTable(&models.URL{})
 	db.AutoMigrate(&models.URL{})
 }
+
+func GetURLFromHash(hash string) (string, error) {
+	db := ConnectDB()
+
+	var url models.URL
+	result := db.Where("hash = ?", hash).First(&url)
+
+	if result.Error != nil {
+		return "", result.Error
+	}
+
+	urlString := url.URL
+	return urlString, nil
+}

@@ -20,16 +20,6 @@ func insertURL(url string) string {
 	return hashedURL
 }
 
-func getURLFromHash(hash string) string {
-	db := helpers.ConnectDB()
-
-	var url models.URL
-	db.Where("hash = ?", hash).First(&url)
-
-	urlString := url.URL
-	return urlString
-}
-
 /*
 GetURL - This function returns the URL from the hash
 */
@@ -37,7 +27,13 @@ func GetURL(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	hash := r.URL.Path[1:]
-	url := getURLFromHash(hash)
+	url, err := helpers.GetURLFromHash(hash)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		response := map[string]interface{}{"error": "URL not found"}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
 
 	http.Redirect(w, r, url, http.StatusSeeOther)
 }
