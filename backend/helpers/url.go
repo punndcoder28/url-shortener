@@ -5,6 +5,9 @@ import (
 	"hash/fnv"
 )
 
+/*
+HashURL - This function returns a hashed string of the URL
+*/
 func HashURL(url string) string {
 	hash := fnv.New32a()
 	hash.Write([]byte(url))
@@ -15,6 +18,9 @@ func HashURL(url string) string {
 	return hashHex
 }
 
+/*
+CreateTempURLFromHash - This function returns a temporary URL from the hash
+*/
 func CreateTempURLFromHash(hash string) string {
 	return "http://localhost:8080/" + hash
 }

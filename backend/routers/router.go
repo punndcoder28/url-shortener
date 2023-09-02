@@ -1,3 +1,6 @@
+/*
+Package routers contains all the routes for the application
+*/
 package routers
 
 import (
@@ -6,6 +9,9 @@ import (
 	controllers "github.com/punndcoder28/url-shortner/controllers"
 )
 
+/*
+Router - This function returns a pointer to a mux.Router we can use as a handler.
+*/
 func Router() *mux.Router {
 	router := mux.NewRouter()
 

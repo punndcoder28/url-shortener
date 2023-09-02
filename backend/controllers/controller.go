@@ -30,6 +30,9 @@ func getURLFromHash(hash string) string {
 	return urlString
 }
 
+/*
+GetURL - This function returns the URL from the hash
+*/
 func GetURL(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -39,6 +42,9 @@ func GetURL(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, url, http.StatusSeeOther)
 }
 
+/*
+CreateURL - This function creates a URL
+*/
 func CreateURL(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
