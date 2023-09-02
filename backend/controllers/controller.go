@@ -2,23 +2,11 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	helpers "github.com/punndcoder28/url-shortner/helpers"
 	models "github.com/punndcoder28/url-shortner/models"
 )
-
-func insertURL(url string) string {
-	db := helpers.ConnectDB()
-
-	hashedURL := helpers.HashURL(url)
-	fmt.Println("Hashed URL: ", hashedURL)
-	urlRecord := models.URL{Hash: hashedURL, URL: url}
-	db.Create(&urlRecord)
-
-	return hashedURL
-}
 
 /*
 GetURL - This function returns the URL from the hash
@@ -47,7 +35,7 @@ func CreateURL(w http.ResponseWriter, r *http.Request) {
 	var createURLRequest models.CreateURLRequest
 	_ = json.NewDecoder(r.Body).Decode(&createURLRequest)
 
-	hash := insertURL(createURLRequest.URL)
+	hash := helpers.InsertURL(createURLRequest.URL)
 	url := helpers.CreateTempURLFromHash(hash)
 	response := map[string]interface{}{"url": url}
 	json.NewEncoder(w).Encode(response)
