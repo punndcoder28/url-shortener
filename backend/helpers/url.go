@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"hash/fnv"
 
@@ -31,13 +32,15 @@ func CreateTempURLFromHash(hash string) string {
 /*
 InsertURL - This function inserts a URL into the database
 */
-func InsertURL(url string) string {
+func InsertURL(url string) (string, error) {
 	db := ConnectDB()
 
 	hashedURL := HashURL(url)
-	fmt.Println("Hashed URL: ", hashedURL)
-	urlRecord := models.URL{Hash: hashedURL, URL: url}
-	db.Create(&urlRecord)
+	urlRecord := models.URL{Hash: hashedURL}
+	result := db.Create(&urlRecord)
+	if result.Error != nil {
+		return "", errors.New(result.Error.Error())
+	}
 
-	return hashedURL
+	return hashedURL, nil
 }
