@@ -35,7 +35,7 @@ func InsertURL(url string) (string, error) {
 	db := ConnectDB()
 
 	hashedURL := HashURL(url)
-	urlRecord := models.URL{Hash: hashedURL}
+	urlRecord := models.URL{Hash: hashedURL, URL: url}
 	result := db.Create(&urlRecord)
 	if result.Error != nil {
 		return "", errors.New(result.Error.Error())
