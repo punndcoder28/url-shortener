@@ -3,7 +3,6 @@ package helpers
 import (
 	"encoding/hex"
 	"errors"
-	"fmt"
 	"hash/fnv"
 
 	models "github.com/punndcoder28/url-shortner/models"
