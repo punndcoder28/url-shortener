@@ -3,15 +3,15 @@ package helpers
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	models "github.com/punndcoder28/url-shortner/models"
 )
 
 func TestConnectDB(t *testing.T) {
 	db := ConnectDB()
 
-	if db == nil {
-		t.Errorf("ConnectDB returned nil, expected *gorm.DB")
-	}
+	assert.NotEqual(t, nil, db, "ConnectDB returned nil, expected *gorm.DB")
 }
 
 func TestCreateURLTable(t *testing.T) {
@@ -19,9 +19,9 @@ func TestCreateURLTable(t *testing.T) {
 
 	CreateURLTable(db)
 
-	if !db.Migrator().HasTable(&models.URL{}) {
-		t.Errorf("CreateURLTable did not create the URL table")
-	}
+	hasTable := db.Migrator().HasTable(&models.URL{})
+
+	assert.Equal(t, true, hasTable, "Table creation failed! URL table not present")
 }
 
 func TestGetURLFromHash(t *testing.T) {
@@ -31,12 +31,8 @@ func TestGetURLFromHash(t *testing.T) {
 	db.Create(&testURL)
 
 	retrievedURL, err := GetURLFromHash("testHash")
-	if err != nil {
-		t.Errorf("GetURLFromHash returned an error: %v", err)
-	}
+	assert.NoError(t, err, "No error while retrieving URL from hash")
 
 	expectedURL := "https://example.com"
-	if retrievedURL != expectedURL {
-		t.Errorf("GetURLFromHash returned %s, expected %s", retrievedURL, expectedURL)
-	}
+	assert.Equal(t, expectedURL, retrievedURL, "Correct URL retrieved from hash")
 }
