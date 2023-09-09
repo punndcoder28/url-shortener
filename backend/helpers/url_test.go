@@ -2,19 +2,18 @@ package helpers
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHashURL(t *testing.T) {
 	url := "https://example.com"
 	hash := HashURL(url)
 	expectedHash := "6fbc04d3"
-	if hash == "" {
-		t.Errorf("HashURL(%s) return empty hash", url)
-	}
 
-	if hash != expectedHash {
-		t.Errorf("HashURL(%s) = %s; want %s", url, hash, "d5c3dbf6")
-	}
+	assert.NotEqual(t, "", hash, "HashURL returned empty hash")
+
+	assert.Equal(t, expectedHash, hash, "HashURL returned correct hash")
 }
 
 func TestCreateTempURLFromHash(t *testing.T) {
@@ -22,25 +21,20 @@ func TestCreateTempURLFromHash(t *testing.T) {
 	expectedURL := "http://localhost:8080/d5c3dbf6"
 	tempURL := CreateTempURLFromHash(hash)
 
-	if tempURL != expectedURL {
-		t.Errorf("CreateTempURLFromHash(%s) = %s; want %s", hash, tempURL, expectedURL)
-	}
+	assert.Equal(t, expectedURL, tempURL, "CreateTempURLFromHash returned correct temp URL")
 }
 
 func TestInsertURL(t *testing.T) {
 	validURL := "https://example.com"
 	hash1, err := InsertURL(validURL)
-	if err != nil {
-		t.Errorf("InsertURL(%s) returned an error: %v", validURL, err)
-	}
 
-	if hash1 == "" {
-		t.Errorf("InsertURL(%s) returned an empty hash", validURL)
-	}
+	assert.NoError(t, err, "No error while inserting URL")
+
+	assert.NotEqual(t, "", hash1, "Hash is empty for string")
 
 	duplicateURL := "https://example.com"
 	hash2, err := InsertURL(duplicateURL)
-	if err == nil && hash2 == "" {
-		t.Errorf("InsertURL(%s) inserted duplicate URL: %v", duplicateURL, err)
-	}
+
+	assert.Error(t, err, "Expected error while inserting duplicate URL")
+	assert.Equal(t, "", hash2, "Expected empty hash for duplicate URL")
 }
