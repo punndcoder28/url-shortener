@@ -3,10 +3,18 @@ package helpers
 import (
 	"errors"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestHandleErr(t *testing.T) {
 	t.Run("NoError", func(t *testing.T) {
+		defer func() {
+			r := recover()
+
+			assert.Equal(t, nil, r, "Program did not panic")
+		}()
+
 		HandleErr(nil)
 	})
 
@@ -14,9 +22,9 @@ func TestHandleErr(t *testing.T) {
 		err := errors.New("test error")
 
 		defer func() {
-			if r := recover(); r == nil {
-				t.Errorf("HandleErr did not panic as expected")
-			}
+			r := recover()
+
+			assert.NotEqual(t, nil, r, "Program recovered from panic successfully")
 		}()
 
 		HandleErr(err)
