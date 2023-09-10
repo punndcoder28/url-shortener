@@ -19,6 +19,7 @@ func loadEnv() string {
 	return dsn
 }
 
+// ConnectDB : This function connects to the database
 func ConnectDB() *gorm.DB {
 	dsn := loadEnv()
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
@@ -27,10 +28,12 @@ func ConnectDB() *gorm.DB {
 	return db
 }
 
+// CreateURLTable : This function creates the URL table
 func CreateURLTable(db *gorm.DB) {
 	db.AutoMigrate(&models.URL{})
 }
 
+// GetURLFromHash : This function gets the URL from the hash
 func GetURLFromHash(hash string) (string, error) {
 	db := ConnectDB()
 
