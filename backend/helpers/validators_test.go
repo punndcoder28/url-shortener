@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/stretchr/testify/assert"
 
 	models "github.com/punndcoder28/url-shortner/models"
 )
@@ -13,33 +14,24 @@ func TestValidateShortenURLRequest(t *testing.T) {
 	invalidRequest := models.CreateURLRequest{URL: ""}
 
 	err := ValidateShortenURLRequest(validRequest)
-	if err != nil {
-		t.Errorf("Expected a valid request, but got an error: %v", err)
-	}
+	assert.NoError(t, err, "Expected a valid request, but got an error")
 
 	err = ValidateShortenURLRequest(invalidRequest)
-	if err == nil {
-		t.Error("Expected an error for an invalid request, but got nil")
-	} else {
-		validationErrors, ok := err.(validator.ValidationErrors)
-		if !ok {
-			t.Error("Expected a validator.ValidationErrors type error, but got a different error type")
-		} else {
-			for _, e := range validationErrors {
-				switch e.Field() {
-				case "URL":
-					switch e.Tag() {
-					case "required":
-						t.Skipf("URL is required, but it's missing")
-					case "url":
-						t.Errorf("URL is not a valid URL: %s", e.Value())
-					default:
-						t.Errorf("Validation error on field %s with tag %s", e.Field(), e.Tag())
-					}
-				default:
-					t.Errorf("Unknown validation error on field %s with tag %s", e.Field(), e.Tag())
-				}
-			}
+	assert.Error(t, err, "Expected an error for an invalid request, but got nil")
+
+	validationErrors, ok := err.(validator.ValidationErrors)
+	assert.True(
+		t,
+		ok,
+		"Expected a validator.ValidationErrors type error, but got a different error type",
+	)
+
+	for _, e := range validationErrors {
+		switch e.Field() {
+		case "URL":
+			assert.Equal(t, "required", e.Tag(), "Expected a required tag, but got a different tag")
+		default:
+			t.Errorf("Unknown validation error on field %s with tag %s", e.Field(), e.Tag())
 		}
 	}
 }
