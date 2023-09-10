@@ -11,12 +11,14 @@ import (
 
 func TestValidateShortenURLRequest(t *testing.T) {
 	validRequest := models.CreateURLRequest{URL: "https://example.com"}
-	invalidRequest := models.CreateURLRequest{URL: ""}
 
 	err := ValidateShortenURLRequest(validRequest)
 	assert.NoError(t, err, "Expected a valid request, but got an error")
+}
 
-	err = ValidateShortenURLRequest(invalidRequest)
+func TestInvalidEmptyShortenURLRequest(t *testing.T) {
+	invalidRequest := models.CreateURLRequest{URL: ""}
+	err := ValidateShortenURLRequest(invalidRequest)
 	assert.Error(t, err, "Expected an error for an invalid request, but got nil")
 
 	validationErrors, ok := err.(validator.ValidationErrors)
