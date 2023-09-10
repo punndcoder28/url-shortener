@@ -26,15 +26,16 @@ func TestCreateTempURLFromHash(t *testing.T) {
 
 func TestInsertURL(t *testing.T) {
 	validURL := "https://example.com"
-	hash1, err := InsertURL(validURL)
+	hash, err := InsertURL(validURL)
 
 	assert.NoError(t, err, "No error while inserting URL")
+	assert.NotEqual(t, "", hash, "Hash is empty for string")
+}
 
-	assert.NotEqual(t, "", hash1, "Hash is empty for string")
-
+func TestInsertDuplicateURL(t *testing.T) {
 	duplicateURL := "https://example.com"
-	hash2, err := InsertURL(duplicateURL)
+	hash, err := InsertURL(duplicateURL)
 
 	assert.Error(t, err, "Expected error while inserting duplicate URL")
-	assert.Equal(t, "", hash2, "Expected empty hash for duplicate URL")
+	assert.Equal(t, "", hash, "Expected empty hash for duplicate URL")
 }
