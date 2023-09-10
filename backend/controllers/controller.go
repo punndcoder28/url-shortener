@@ -3,7 +3,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	helpers "github.com/punndcoder28/url-shortner/helpers"
