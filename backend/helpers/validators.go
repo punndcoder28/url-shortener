@@ -9,6 +9,7 @@ import (
 
 var validate *validator.Validate
 
+// ValidateShortenURLRequest : This function validates the CreateURLRequest
 func ValidateShortenURLRequest(createURLRequest models.CreateURLRequest) error {
 	validate = validator.New(validator.WithRequiredStructEnabled())
 

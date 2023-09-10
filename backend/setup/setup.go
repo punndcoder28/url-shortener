@@ -1,3 +1,4 @@
+// Package setup : This package contains all the setup functions
 package setup
 
 import (
