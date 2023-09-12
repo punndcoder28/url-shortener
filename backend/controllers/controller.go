@@ -53,6 +53,7 @@ func CreateURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.WriteHeader(http.StatusOK)
 	url := helpers.CreateTempURLFromHash(hash)
 	response := map[string]interface{}{"url": url}
 	json.NewEncoder(w).Encode(response)
