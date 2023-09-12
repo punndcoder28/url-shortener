@@ -7,11 +7,7 @@ import (
 	helpers "github.com/punndcoder28/url-shortner/helpers"
 )
 
-func main() {
-	createTables()
-}
-
-func createTables() {
+func CreateTables() {
 	db := helpers.ConnectDB()
 
 	fmt.Println("Connection Opened to Database")

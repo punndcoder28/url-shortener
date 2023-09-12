@@ -6,12 +6,15 @@ import (
 	"net/http"
 
 	routers "github.com/punndcoder28/url-shortner/routers"
+	setup "github.com/punndcoder28/url-shortner/setup"
 )
 
 func main() {
 	fmt.Println("Welcome to URL Shortner")
 
 	fmt.Println("Creating tables")
+
+	setup.CreateTables()
 
 	fmt.Println("Created tables")
 
