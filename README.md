@@ -1,17 +1,47 @@
-### URL Shortener using GO Lang
+# URL Shortener using GO Lang
 
-## Components
+This is a simple URL shortener project created using Golang
 
-# 1. Front End
+## Overview
 
-The frontend would be a simple website which has a input field to take the input
-of url and return the shortened version. It will include two buttons and two
-input fields so that the second one is used to redirect the shortened url to
-it's original endpoint. The frontend application would be build using one of the
-new framework which I have not used before
+This project implements a basic URL shortener application and has the following key aspects:
 
-# 2. Backend
+- HTTP routing and handling.
+- Database interaction (even if just for demonstration).
+- Basic error handling and validation.
+- Unit tests for each module and file
 
-The backend would be written in plain GO lang. I would be using UUID4 to encode
-the url and return the shortened version. I would be using a relational database
-such as postgreSQL to maintain the mappings of the URLs
+## Setup
+
+1. Install project dependencies using the command
+   `go mod download`
+
+2. Run `setup.sh` file to automatically start the server
+
+## API Endpoints
+
+This project exposes two basic endpoints `GET` and `POST` to create a shortened
+URL and to fetch the original url from the shortened url
+
+- `POST` endpoint
+  - `/api/shorten`
+  - Body :
+    ```
+    {
+        url: "url-string"
+    }
+    ```
+- `GET` endpoint
+  - `/{short_url_hash}`
+  - Path parameters - `short_url_hash` provided by `/api/shorten` endpoint
+
+## Tests
+
+File unit tests have been added for modules `helpers`(*fully) and
+`controllers`(*partially) and can be run by using the command
+`go test ./... -v -cover`
+
+TODO
+
+- [x] Unit tests for `helpers`
+- [ ] Unit tests for `controllers`
