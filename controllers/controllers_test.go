@@ -37,4 +37,31 @@ func TestCreateURL(t *testing.T) {
 	)
 }
 
+func TestCreateEmptyURL(t *testing.T) {
+	requestBody := strings.NewReader(`{"url":""}`)
+	req := httptest.NewRequest(http.MethodPost, "/api/shorten", requestBody)
+	w := httptest.NewRecorder()
+
+	CreateURL(w, req)
+
+	resp := w.Result()
+
+	assert.Equal(t, http.StatusBadRequest, resp.StatusCode, "Status code should be 400")
+
+	responseBody, err := io.ReadAll(resp.Body)
+
+	assert.NoError(t, err, "Error should be nil while reading response body")
+
+	responseBody = []byte(strings.TrimSuffix(string(responseBody), "\n"))
+
+	expectedResponseBody := `{"Message":"Invalid request body sent"}`
+
+	assert.Equal(
+		t,
+		expectedResponseBody,
+		string(responseBody),
+		"Response body should be equal to expected response body",
+	)
+}
+
 func TestGetURL(t *testing.T) {}
