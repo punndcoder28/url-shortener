@@ -38,6 +38,17 @@ func InsertURL(url string) (string, error) {
 	urlRecord := models.URL{Hash: hashedURL, URL: url}
 	result := db.Create(&urlRecord)
 	if result.Error != nil {
+		if pgErr := PgError(result.Error); pgErr != nil {
+			if pgErr.Code == "23505" {
+				url, err := FindURLHashFromHash(db, hashedURL)
+				if err != nil {
+					return "", errors.New(result.Error.Error())
+				}
+
+				return url, nil
+			}
+		}
+
 		return "", errors.New(result.Error.Error())
 	}
 
