@@ -91,4 +91,22 @@ func TestCreateDuplicateURL(t *testing.T) {
 	)
 }
 
-func TestGetURL(t *testing.T) {}
+func TestGetURL(t *testing.T) {
+	req := httptest.NewRequest("get", "/8739bc55", nil)
+	w := httptest.NewRecorder()
+
+	GetURL(w, req)
+
+	response := w.Result()
+
+	assert.Equal(
+		t,
+		http.StatusSeeOther,
+		response.StatusCode,
+		"Status code should match with redirect status code",
+	)
+
+	_, err := io.ReadAll(response.Body)
+
+	assert.NoError(t, err, "Error should be nil while reading response body")
+}
