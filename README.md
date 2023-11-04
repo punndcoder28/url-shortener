@@ -16,7 +16,9 @@ This project implements a basic URL shortener application and has the following 
 1. Install project dependencies using the command
    `go mod download`
 
-2. Run `setup.sh` file to automatically start the server
+2. Save your cockroachDB connection string in `.env` file with the key `DATABASE_DSN`
+
+3. Run `go run main.go` file to automatically start the server
 
 ## API Endpoints
 
